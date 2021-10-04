@@ -288,3 +288,142 @@ const GET_PROPOSALS = gql`
 `;
 
 ```
+
+To find out more data available on the this endpoint please visit [Vega Graphql docs](https://docs.fairground.vega.xyz/api/graphql/proposal.doc.html)
+After writing the graphql query it's time to make a simple table to consume the fetched response.
+
+```javascript
+import { useQuery, gql } from "@apollo/client";
+...other imports
+
+export function Proposal() {
+  const { loading, data, error } = useQuery(GET_PROPOSALS);
+
+  if (loading) return <Loading />;
+
+  if (error) return <DisConnected error={error.message} />;
+
+  const proposals = data?.proposals;
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Proposal</th>
+          <th>Status</th>
+          <th>Enactment date</th>
+          <th>Votes Yes/No</th>
+          <th>Closing date</th>
+          <th>Rejection reason</th>
+        </tr>
+      </thead>
+      <tbody>
+        {proposals?.map((proposal: any, index: number) => (
+          <tr key={index}>
+            <td>New Market: {proposal?.terms?.change?.instrument?.code}</td>
+            <td>{proposal?.state}</td>
+            <td>
+              {dayjs(proposal?.terms?.enactmentDatetime).format(
+                "YYYY MM DD HH:MM"
+              )}
+            </td>
+            <td>
+              {proposal?.votes?.yes?.totalNumber}/
+              {proposal?.votes?.no?.totalNumber}
+            </td>
+            <td>
+              {dayjs(proposal?.terms?.closingDatetime).format(
+                "YYYY MM DD HH:MM"
+              )}
+            </td>
+            <td>{proposal?.rejectionReason}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+```
+
+We are formating the date with dayjs run `npm install dayjs` to add to your project.
+
+## Get Party Positions
+
+```gql
+  const GET_PARTY_POSITIONS = gql`
+  query GetPartyPositions($partyID: ID) {
+    party(id: $partyID) {
+      positions {
+        unrealisedPNL
+        openVolume
+        realisedPNL
+        averageEntryPrice
+        margins {
+          maintenanceLevel
+        }
+        market {
+          tradableInstrument {
+            instrument {
+              code
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+```
+
+To get the party(user) positions we need to supply the user partyId to the query. In this demo the partyId is saved in .env file.
+
+```javascript
+const partyID = process.env.REACT_APP_WALLET_PUBLIC_KEY;
+// const partyID =
+//   "79042cbcff5afd0d50c177870a151d59c0f87bea70614570301047d192f9cfc5";
+
+export function Positions() {
+  const { loading, data, error } = useQuery(GET_PARTY_POSITIONS, {
+    variables: { partyID },
+  });
+
+  if (loading) return <Loading />;
+
+  if (error) return <DisConnected error={error.message} />;
+
+  const positions = data?.party?.positions;
+
+  const decimals = 5;
+
+  function formatDecimal(amount: number) {
+    amount = amount * 10 ** -decimals;
+    return numeral(amount).format();
+  }
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th>Entry price</th>
+          <th>Maintenance margin</th>
+          <th>Unrealised PNL</th>
+          <th>Realised PNL</th>
+          <th>Open vol</th>
+        </tr>
+      </thead>
+      <tbody>
+        {positions?.map((position: any, index: number) => (
+          <tr key={index}>
+            <td>{position?.market?.tradableInstrument?.instrument?.code}</td>
+            <td>{formatDecimal(position?.averageEntryPrice)}</td>
+            <td>{position?.margins?.maintenanceLevel}</td>
+            <td>{formatDecimal(position?.unrealisedPNL)}</td>
+            <td>{formatDecimal(position?.realisedPNL)}</td>
+            <td>{position?.openVolume}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+```
