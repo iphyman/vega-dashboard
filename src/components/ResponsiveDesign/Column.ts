@@ -9,15 +9,16 @@ import {
   IJustifyContent,
 } from "./constants";
 
+type ColumnType = string | number;
 export interface IColumn {
   alignItems?: IAlignItems;
   alignItemsMobileL?: IAlignItems;
-  column?: string | number | boolean;
-  columnAtLeastMobile?: string | number;
-  columnAtLeastMobileL?: string | number;
-  columnAtLeastTablet?: string | number;
-  columnAtLeastTabletL?: string | number;
-  columnAtLeastLaptop?: string | number;
+  column?: ColumnType | boolean;
+  columnAtLeastMobile?: ColumnType;
+  columnAtLeastMobileL?: ColumnType;
+  columnAtLeastTablet?: ColumnType;
+  columnAtLeastTabletL?: ColumnType;
+  columnAtLeastLaptop?: ColumnType;
   display?: IDisplay;
   justifyContent?: IJustifyContent;
   justifyContentAtLeastMobile?: IJustifyContent;
@@ -46,7 +47,7 @@ const FlexBasis = (col: any): string => {
     default:
       return `
             flex: 0, 0, auto;
-            width: ${OneColumn * col + "%"}
+            width: ${OneColumn * col}% !important;
             `;
   }
 };
@@ -55,7 +56,7 @@ export const Column = styled.div<IColumn>`
   position: relative;
   min-height: 1px;
 
-  ${({ column }) => FlexBasis(column)};
+  ${({ column }) => (column ? FlexBasis(column) : null)};
   ${({ display = "flex" }) => Display[display]};
   margin: ${({ margin }) => margin};
   padding: ${({ padding }) => padding};
@@ -65,11 +66,13 @@ export const Column = styled.div<IColumn>`
   `};
 
   ${media.atLeastMobile`
-${({ columnAtLeastMobile }: IColumn) => FlexBasis(columnAtLeastMobile)};
+${({ columnAtLeastMobile }: IColumn) =>
+  columnAtLeastMobile ? FlexBasis(columnAtLeastMobile) : null};
 `};
 
   ${media.atLeastMobileL`
-${({ columnAtLeastMobileL }: IColumn) => FlexBasis(columnAtLeastMobileL)};
+${({ columnAtLeastMobileL }: IColumn) =>
+  columnAtLeastMobileL ? FlexBasis(columnAtLeastMobileL) : null};
 `};
 
   ${media.tablet`
@@ -77,15 +80,18 @@ ${({ columnAtLeastMobileL }: IColumn) => FlexBasis(columnAtLeastMobileL)};
   `};
 
   ${media.atLeastTablet`
-${({ columnAtLeastTablet }: IColumn) => FlexBasis(columnAtLeastTablet)};
+${({ columnAtLeastTablet }: IColumn) =>
+  columnAtLeastTablet ? FlexBasis(columnAtLeastTablet) : null};
 `};
 
   ${media.atLeastTabletL`
-${({ columnAtLeastTabletL }: IColumn) => FlexBasis(columnAtLeastTabletL)};
+${({ columnAtLeastTabletL }: IColumn) =>
+  columnAtLeastTabletL ? FlexBasis(columnAtLeastTabletL) : null};
 `};
 
   ${media.atLeastLaptop`
-${({ columnAtLeastLaptop }: IColumn) => FlexBasis(columnAtLeastLaptop)};
+${({ columnAtLeastLaptop }: IColumn) =>
+  columnAtLeastLaptop ? FlexBasis(columnAtLeastLaptop) : null};
 `};
 
   ${({ alignItems = "inherit" }) => AlignItems[alignItems]};

@@ -2,19 +2,23 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import Routes from "./routes";
+import { ApolloProvider } from "@apollo/client";
+import Routes from "routes";
 import reportWebVitals from "./reportWebVitals";
-import store from "./store";
+import store from "store";
 import { GlobalStyle } from "./GlobalStyle";
+import { client } from "apollo";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <HashRouter>
-        <GlobalStyle />
-        <Routes />
-      </HashRouter>
-    </Provider>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <HashRouter>
+          <GlobalStyle />
+          <Routes />
+        </HashRouter>
+      </Provider>
+    </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

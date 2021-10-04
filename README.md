@@ -41,9 +41,18 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ## Project coverage
 
-- [ ] Listing markets and market data (show market status)
+- [x] Listing markets and market data (show market status)
 - [ ] Straming orders and trades
 - [ ] Party (trader) information for a given public key, including account balances and positions
 - [ ] Prepare and place an order on a market
 - [ ] Streaming of events
 - [ ] Governance proposals
+
+## Todo
+
+- [ ] Add stylings
+- [ ] Make the app themeable
+- [ ] Add localization
+- [ ] Stream candles (for charting)
+- [ ] Write a more indepth step by step guild (docs and video gulde)
+- [ ] Add transaction signing capabilities

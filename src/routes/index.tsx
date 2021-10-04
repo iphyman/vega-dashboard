@@ -7,7 +7,7 @@ export default class Routes extends PureComponent {
     return (
       <>
         <Switch>
-          <Route exact path="/" component={Trade} />
+          <Route exact path="/trade/:marketId" component={Trade} />
         </Switch>
       </>
     );

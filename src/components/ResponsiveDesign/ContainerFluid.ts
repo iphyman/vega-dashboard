@@ -7,6 +7,7 @@ export interface IContainerFluid {
   pl?: string;
   mr?: string;
   ml?: string;
+  p?: string;
 }
 
 export const ContainerFluid = styled.div<IContainerFluid>`
@@ -15,6 +16,7 @@ export const ContainerFluid = styled.div<IContainerFluid>`
   height: ${({ height }) => height};
   padding-right: ${({ pr }) => pr ?? "1rem"};
   padding-left: ${({ pl }) => pl ?? "1rem"};
+  padding: ${({ p }) => p};
   margin-right: ${({ mr }) => mr ?? "auto"};
   margin-left: ${({ ml }) => ml ?? "auto"};
 `;
