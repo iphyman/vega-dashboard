@@ -123,8 +123,8 @@ export const Slider: FunctionComponent<SliderProps> = ({
         node.addEventListener("scroll", handleOnScroll);
       }
     },
-
-    [slider, handleOnScroll]
+    // eslint-disable-next-line
+    [slider, children]
   );
 
   const mouseDown = (e: MouseEvent) => {
