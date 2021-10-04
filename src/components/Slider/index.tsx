@@ -124,11 +124,12 @@ export const Slider: FunctionComponent<SliderProps> = ({
       }
     },
 
-    [slider, children]
+    [slider, handleOnScroll]
   );
 
   const mouseDown = (e: MouseEvent) => {
     setIsDown(true);
+    // eslint-disable-next-line
     setPosition({
       startX: e.pageX - slider.current!.offsetLeft,
       scrollLeft: slider.current!.scrollLeft,
@@ -138,12 +139,15 @@ export const Slider: FunctionComponent<SliderProps> = ({
   const mouseUp = () => {
     setIsDown(false);
     setShowArrow(showArrows());
+    // eslint-disable-next-line
     slider.current!.classList.remove("sliding");
   };
 
   const mouseMove = (e: MouseEvent) => {
     if (!isDown) return;
+    // eslint-disable-next-line
     e.preventDefault();
+    // eslint-disable-next-line
     slider.current!.classList.add("sliding");
     const eventPosition = e.pageX - slider.current!.offsetLeft;
     const slide = eventPosition - position.startX;

@@ -42,11 +42,11 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ## Project coverage
 
 - [x] Listing markets and market data (show market status)
-- [ ] Straming orders and trades
-- [ ] Party (trader) information for a given public key, including account balances and positions
+- [x] Straming orders and trades
+- [x] Party (trader) information for a given public key, including account balances and positions
 - [ ] Prepare and place an order on a market
-- [ ] Streaming of events
-- [ ] Governance proposals
+- [x] Streaming of events
+- [x] Governance proposals
 
 ## Todo
 

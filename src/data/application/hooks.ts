@@ -49,5 +49,5 @@ export function useSetAppConnected() {
 
   return useCallback(() => {
     dispatch(setAppConnected({ appConnected: !connectionStatus }));
-  }, [dispatch]);
+  }, [connectionStatus, dispatch]);
 }
