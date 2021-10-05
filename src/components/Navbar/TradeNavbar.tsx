@@ -108,8 +108,12 @@ export function TradeNavbar() {
         </HomeLinkWrap>
         <MenuGroup>
           <MenuLink to="/trade">Trade</MenuLink>
-          <ExternalLink href="/">Reference</ExternalLink>
-          <ExternalLink href="/">API</ExternalLink>
+          <ExternalLink href="https://docs.fairground.vega.xyz/api/graphql/">
+            Reference
+          </ExternalLink>
+          <ExternalLink href="https://docs.fairground.vega.xyz/docs/api-reference/">
+            API
+          </ExternalLink>
           <ExternalLink href="https://github.com/iphyman/vega-dashboard">
             <FaGithub size={24} />
           </ExternalLink>
