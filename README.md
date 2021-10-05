@@ -2,7 +2,7 @@
 
 A minimalistic dashboard exploring Vega API and GraphQL in a React typescript app.
 
-![vegaMex dashboard](/public/img/dashboard.png)
+![vegaMex dashboard](/public/img/dashboard.PNG)
 
 ## Get started
 
