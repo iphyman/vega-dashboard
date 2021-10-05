@@ -82,9 +82,10 @@ In this demo we want to fetch the following data about all markets available in 
 - market ID
 - market short name
 - market state
-  Now we define our graphql query to get just the data that we need.
 
-```graphql
+Now we define our graphql query to get just the data that we need.
+
+```javascript
 const GET_MARKETS = gql`
   query GetMarkets {
     markets {
@@ -142,7 +143,7 @@ export function Navbar() {
 
 We are going to query Vega graphql API to get data for a specific market, to do this we need to have a valid market id which we can obtain by quering the API for all markets.
 
-```gql
+```javascript
 const GET_MARKET_DATA = gql`
   query GetMarketData($marketId: ID!) {
     market(id: $marketId) {
@@ -257,7 +258,7 @@ export function MarketInfo() {
 
 We want to fetch all governance proposal on new market
 
-```gql
+```javascript
 const GET_PROPOSALS = gql`
   query GetProposals {
     proposals {
@@ -286,7 +287,6 @@ const GET_PROPOSALS = gql`
     }
   }
 `;
-
 ```
 
 To find out more data available on the this endpoint please visit [Vega Graphql docs](https://docs.fairground.vega.xyz/api/graphql/proposal.doc.html)
@@ -349,8 +349,8 @@ We are formating the date with dayjs run `npm install dayjs` to add to your proj
 
 ## Get Party Positions
 
-```gql
-  const GET_PARTY_POSITIONS = gql`
+```javascript
+const GET_PARTY_POSITIONS = gql`
   query GetPartyPositions($partyID: ID) {
     party(id: $partyID) {
       positions {
@@ -420,6 +420,152 @@ export function Positions() {
             <td>{formatDecimal(position?.unrealisedPNL)}</td>
             <td>{formatDecimal(position?.realisedPNL)}</td>
             <td>{position?.openVolume}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+```
+
+## Streaming Orders
+
+Let's create a live order book component for our application, in our order book we want the following data displayed.
+
+- Price
+- Size
+- Side (Buy or Sell)
+- Decimal place (help in converting to actual value, default is 5)
+
+We now proceed to write a graphql query to get just the data we need. For more details on what data can be returned by this query endpoint check [Vega Schema Docs](https://docs.fairground.vega.xyz/api/graphql/order.doc.html).
+
+```javascript
+const STREAM_ORDERS = gql`
+  subscription OnNewOrders($marketId: ID) {
+    orders(marketId: $marketId) {
+      size
+      side
+      price
+      market {
+        decimalPlaces
+      }
+    }
+  }
+`;
+```
+
+```javascript
+import { useSubscription, gql } from "@apollo/client";
+/**
+ *  <Route path="/trade/:marketId"/>
+ *  We are getting and data passed after the trade path as our marketId
+ **/
+import { useParams } from "react-router-dom";
+
+export function OrderBook() {
+  const { marketId } = useParams<{ marketId: string }>()
+  const { loading, data, error } = useSubscription(STREAM_ORDERS, {
+    variables: { marketId },
+  });
+
+  if (loading) return <Loading />;
+
+  if (error) return <DisConnected error={error.message} />;
+
+  const decimals = 5;
+
+  function formatDecimal(amount: number) {
+    amount = amount * 10 ** -decimals;
+    return numeral(amount).format();
+  }
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Price</th>
+          <th>Size</th>
+          <th>Side</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data?.orders.map((order: any, index: number) => (
+          <tr key={index} data-side={order?.side}>
+            <td>{formatDecimal(order?.price)}</td>
+            <td>{order?.size}</td>
+            <td>{order?.side}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+```
+
+In our above component we are fetching the active marketId from the current route parameter. This will allow us to easily load a new market when the url changes.
+
+## Streaming Trades
+
+Our recent trade streaming component is much similar to the order streaming component above, only that we are making changes to the query and destructuring of the response object.
+The data we need displayed for this component are;
+
+- Price
+- Size
+- Aggressor (Buy or Sell)
+
+Let's go ahead to write our query.
+
+```javascript
+const STREAM_TRADES = gql`
+  subscription OnNewTrade($marketId: ID) {
+    trades(marketId: $marketId) {
+      size
+      price
+      aggressor
+    }
+  }
+`;
+```
+Let's go ahead to create our component jsx
+```javascript
+  export function RecentTrades() {
+  const defaultMarketId = useActiveMarketId();
+  const { marketId } = useParams<{ marketId: string }>() ?? defaultMarketId;
+  const { loading, data, error } = useSubscription(STREAM_TRADES, {
+    variables: { marketId },
+  });
+
+  if (loading) return <Loading />;
+
+  if (error) return <DisConnected error={error.message} />;
+
+  const decimals = 5;
+  /**
+   *
+   * All currency in Vega are padded
+   * so to get the real value we multiply 10^-decimals
+   **/
+  function formatDecimal(amount: number) {
+    amount = amount * 10 ** -decimals;
+    return numeral(amount).format();
+  }
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>Price</th>
+          <th>Size</th>
+          <th>Side</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data?.trades.map((trade: any, index: number) => (
+          <tr key={index} data-side={trade?.aggressor}>
+            <td>{formatDecimal(trade?.price)}</td>
+            <td>{trade?.size}</td>
+            <td>{trade?.aggressor}</td>
           </tr>
         ))}
       </tbody>
