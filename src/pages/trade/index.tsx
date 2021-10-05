@@ -44,7 +44,7 @@ export default class Trade extends Component {
             <Proposal />
           </Panel>
           <Panel key="chart" title="Place Order">
-            chart
+            Coming soon...
           </Panel>
         </ResponsiveGrid>
       </Layout>
