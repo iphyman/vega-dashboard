@@ -21,9 +21,9 @@ const GET_PARTY_BALANCE = gql`
   }
 `;
 
-const partyID = process.env.REACT_APP_WALLET_PUBLIC_KEY;
-// const partyID =
-//   "79042cbcff5afd0d50c177870a151d59c0f87bea70614570301047d192f9cfc5";
+// const partyID = process.env.REACT_APP_WALLET_PUBLIC_KEY;
+const partyID =
+  "776833e389348a8d120ac8c731e991a71f5ad0cbfdf8929a56cbd47c71574fa2";
 
 export function Balance() {
   const defaultMarketId = useActiveMarketId();
