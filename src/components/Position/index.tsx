@@ -6,7 +6,7 @@ import DataTable from "../DataTable";
 numeral.defaultFormat("0,0");
 
 const GET_PARTY_POSITIONS = gql`
-  query GetPartyPositions($partyID: ID) {
+  query GetPartyPositions($partyID: ID!) {
     party(id: $partyID) {
       positions {
         unrealisedPNL

@@ -8,7 +8,7 @@ import DataTable from "../DataTable";
 numeral.defaultFormat("0,0");
 
 const GET_PARTY_BALANCE = gql`
-  query GetPartyBalance($partyID: ID) {
+  query GetPartyBalance($partyID: ID!) {
     party(id: $partyID) {
       accounts {
         type
@@ -37,6 +37,8 @@ export function Balance() {
   if (error) return <Loading error={error.message} />;
 
   const balances = data?.party?.accounts;
+
+  console.log(error);
 
   const decimals = 5;
 
