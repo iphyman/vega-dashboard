@@ -1,6 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import numeral from "numeral";
-import { Loading, DisConnected } from "../Loaders";
+import { Loading } from "../Loaders";
 import DataTable from "../DataTable";
 
 numeral.defaultFormat("0,0");
@@ -30,7 +30,7 @@ const GET_PARTY_POSITIONS = gql`
 
 // const partyID = process.env.REACT_APP_WALLET_PUBLIC_KEY;
 const partyID =
-  "776833e389348a8d120ac8c731e991a71f5ad0cbfdf8929a56cbd47c71574fa2";
+  "11712988e1cb3be24d5f664d23478e8c08436862f1f521fe7996628ca89596f9";
 
 export function Positions() {
   const { loading, data, error } = useQuery(GET_PARTY_POSITIONS, {
@@ -39,7 +39,7 @@ export function Positions() {
 
   if (loading) return <Loading />;
 
-  if (error) return <DisConnected error={error.message} />;
+  if (error) return <Loading error={error.message} />;
 
   const positions = data?.party?.positions;
 
