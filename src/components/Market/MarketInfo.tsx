@@ -329,7 +329,7 @@ export function MarketInfo() {
           <tr>
             <th>Tags</th>
             <td>
-              {tags.map((item: any, index: any) => (
+              {tags?.map((item: any, index: any) => (
                 <div key={index}>{item}</div>
               ))}
             </td>
