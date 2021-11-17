@@ -141,7 +141,11 @@ const Table = styled.table`
 
 export function MarketInfo() {
   const defaultMarketId = useActiveMarketId();
-  const { marketId } = useParams<{ marketId: string }>() ?? defaultMarketId;
+  let { marketId } = useParams();
+
+  if (!marketId) {
+    marketId = defaultMarketId;
+  }
 
   const { loading, error, data } = useQuery(GET_MARKET_DATA, {
     variables: { marketId },

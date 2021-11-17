@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { HashRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { ApolloProvider } from "@apollo/client";
 import Routes from "routes";
@@ -13,10 +13,10 @@ ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <Provider store={store}>
-        <HashRouter>
+        <BrowserRouter>
           <GlobalStyle />
           <Routes />
-        </HashRouter>
+        </BrowserRouter>
       </Provider>
     </ApolloProvider>
   </React.StrictMode>,

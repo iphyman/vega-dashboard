@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
 import { Media } from "components/ResponsiveDesign";
 
-const activeClassName = "ACTIVE";
+const activeclassname = "active";
 
 const NavbarWrap = styled.div`
   position: relative;
@@ -76,7 +76,7 @@ const ExternalLink = styled.a.attrs({
 `;
 
 const MenuLink = styled(NavLink).attrs({
-  activeClassName,
+  activeclassname,
 })`
   display: flex;
   align-items: center;
@@ -89,7 +89,7 @@ const MenuLink = styled(NavLink).attrs({
   line-height: 1;
   transition: color 0.5s ease;
   color: #f5f5f5a3;
-  &.${activeClassName} {
+  &.${activeclassname} {
     font-weight: 600;
     color: #ffffff;
   }

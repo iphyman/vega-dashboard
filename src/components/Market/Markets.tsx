@@ -20,7 +20,7 @@ const GET_MARKETS = gql`
   }
 `;
 
-const activeClassName = "ACTIVE";
+const activeclassname = "active";
 
 const NavbarWrapper = styled.div`
   width: 100%;
@@ -43,7 +43,7 @@ const Row = styled.div`
 `;
 
 const NavbarItem = styled(NavLink).attrs({
-  activeClassName,
+  activeclassname,
 })`
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@ const NavbarItem = styled(NavLink).attrs({
   border-radius: 8px 8px 0px 0px;
   padding: 5px 10px;
   text-decoration: none;
-  &.${activeClassName} {
+  &.${activeclassname} {
     border-color: #ffffff;
     border-bottom-color: #000000;
     border-top: 4px solid #edff22;
@@ -97,6 +97,9 @@ export function Markets() {
 
   if (error) return <Loading error={error.message} />;
 
+  // Set default market to first market in array
+  setActiveMarketId(data.markets[0].id);
+
   return (
     <NavbarWrapper>
       <Container>
@@ -110,7 +113,7 @@ export function Markets() {
                 key={index}
                 title={market?.tradableInstrument?.instrument?.code}
                 subtitle={market?.state}
-                to={market?.id}
+                to={`/trade/${market?.id}`}
                 onClick={() => setActiveMarketId(market?.id)}
               />
             ))}

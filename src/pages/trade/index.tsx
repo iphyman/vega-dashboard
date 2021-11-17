@@ -31,7 +31,7 @@ export default class Trade extends Component {
           <Panel key="orderBook" title="Orderbook">
             <OrderBook />
           </Panel>
-          <Panel key="recentTrade" title="Recent trades">
+          <Panel key="recentTrade" title="Recent Trades">
             <RecentTrades />
           </Panel>
           <Panel key="openOrders" title="Postions">
@@ -43,7 +43,7 @@ export default class Trade extends Component {
           <Panel key="positions" title="Governance Proposals">
             <Proposal />
           </Panel>
-          <Panel key="chart" title="Place Order">
+          <Panel key="chart" title="Chart">
             Coming soon...
           </Panel>
         </ResponsiveGrid>

@@ -22,7 +22,12 @@ const STREAM_ORDERS = gql`
 
 export function OrderBook() {
   const defaultMarketId = useActiveMarketId();
-  const { marketId } = useParams<{ marketId: string }>() ?? defaultMarketId;
+  let { marketId } = useParams();
+
+  if (!marketId) {
+    marketId = defaultMarketId;
+  }
+
   const { loading, data, error } = useSubscription(STREAM_ORDERS, {
     variables: { marketId },
   });

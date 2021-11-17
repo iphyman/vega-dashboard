@@ -19,7 +19,12 @@ const STREAM_TRADES = gql`
 
 export function RecentTrades() {
   const defaultMarketId = useActiveMarketId();
-  const { marketId } = useParams<{ marketId: string }>() ?? defaultMarketId;
+  let { marketId } = useParams();
+
+  if (!marketId) {
+    marketId = defaultMarketId;
+  }
+
   const { loading, data, error } = useSubscription(STREAM_TRADES, {
     variables: { marketId },
   });
