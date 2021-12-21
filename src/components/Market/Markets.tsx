@@ -98,7 +98,9 @@ export function Markets() {
   if (error) return <Loading error={error.message} />;
 
   // Set default market to first market in array
-  setActiveMarketId(data.markets[0].id);
+  if (data.markets) {
+    setActiveMarketId(data.markets[0].id);
+  }
 
   return (
     <NavbarWrapper>
@@ -108,15 +110,16 @@ export function Markets() {
             rightIcon={<BsChevronDoubleRight />}
             leftIcon={<BsChevronDoubleLeft />}
           >
-            {data?.markets.map((market: any, index: number) => (
-              <NavItem
-                key={index}
-                title={market?.tradableInstrument?.instrument?.code}
-                subtitle={market?.state}
-                to={`/trade/${market?.id}`}
-                onClick={() => setActiveMarketId(market?.id)}
-              />
-            ))}
+            {data.markets &&
+              data?.markets.map((market: any, index: number) => (
+                <NavItem
+                  key={index}
+                  title={market?.tradableInstrument?.instrument?.code}
+                  subtitle={market?.state}
+                  to={`/trade/${market?.id}`}
+                  onClick={() => setActiveMarketId(market?.id)}
+                />
+              ))}
           </Slider>
         </Row>
       </Container>

@@ -160,7 +160,7 @@ export function MarketInfo() {
   const fees = response?.fees?.factors;
   const lqdty = response?.liquidityMonitoringParameters;
   const priceMonTriggers = marketData?.priceMonitoringBounds;
-  const { tags } = response?.tradableInstrument?.instrument?.metadata;
+  const tags = response?.tradableInstrument?.instrument?.metadata;
   const decimals = response?.decimalPlaces;
 
   function formatHorizon(seconds: number) {
@@ -256,45 +256,47 @@ export function MarketInfo() {
           <tr>
             <th>Total fee</th>
             <td>
-              {numeral(fees?.infrastructureFee)
-                .add(fees?.makerFee)
-                .add(fees?.liquidityFee)
-                .format("0.00%")}
+              {fees &&
+                numeral(fees?.infrastructureFee)
+                  .add(fees?.makerFee)
+                  .add(fees?.liquidityFee)
+                  .format("0.00%")}
             </td>
           </tr>
         </tbody>
       </Table>
       <Title>Price monitoring triggers</Title>
-      {priceMonTriggers.map((item: any, index: any) => (
-        <Table key={index}>
-          <tbody>
-            <tr>
-              <th>Time horizon</th>
-              <td>{formatHorizon(item?.trigger?.horizonSecs)}</td>
-            </tr>
-            <tr>
-              <th>Probability</th>
-              <td>{item?.trigger?.probability}</td>
-            </tr>
-            <tr>
-              <th>Reference price</th>
-              <td>{formatDecimal(item?.referencePrice)}</td>
-            </tr>
-            <tr>
-              <th>Minimum valid price</th>
-              <td>{formatDecimal(item?.minValidPrice)}</td>
-            </tr>
-            <tr>
-              <th>Maximum valid price</th>
-              <td>{formatDecimal(item?.maxValidPrice)}</td>
-            </tr>
-            <tr>
-              <th>Auction extension</th>
-              <td>{formatHorizon(item?.trigger?.auctionExtensionSecs)}</td>
-            </tr>
-          </tbody>
-        </Table>
-      ))}
+      {priceMonTriggers &&
+        priceMonTriggers.map((item: any, index: any) => (
+          <Table key={index}>
+            <tbody>
+              <tr>
+                <th>Time horizon</th>
+                <td>{formatHorizon(item?.trigger?.horizonSecs)}</td>
+              </tr>
+              <tr>
+                <th>Probability</th>
+                <td>{item?.trigger?.probability}</td>
+              </tr>
+              <tr>
+                <th>Reference price</th>
+                <td>{formatDecimal(item?.referencePrice)}</td>
+              </tr>
+              <tr>
+                <th>Minimum valid price</th>
+                <td>{formatDecimal(item?.minValidPrice)}</td>
+              </tr>
+              <tr>
+                <th>Maximum valid price</th>
+                <td>{formatDecimal(item?.maxValidPrice)}</td>
+              </tr>
+              <tr>
+                <th>Auction extension</th>
+                <td>{formatHorizon(item?.trigger?.auctionExtensionSecs)}</td>
+              </tr>
+            </tbody>
+          </Table>
+        ))}
       <Title>Market Details</Title>
       <Table>
         <tbody>
@@ -329,10 +331,9 @@ export function MarketInfo() {
           <tr>
             <th>Tags</th>
             <td>
-              {tags &&
-                tags?.map((item: any, index: any) => (
-                  <div key={index}>{item}</div>
-                ))}
+              {tags?.map((item: any, index: any) => (
+                <div key={index}>{item}</div>
+              ))}
             </td>
           </tr>
         </tbody>
